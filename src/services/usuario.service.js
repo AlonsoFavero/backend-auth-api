@@ -12,6 +12,13 @@ async function criar(nome,email,senha){
     return novoUsuario
 }
 
+async function deletar(id){
+    const usuario = await Usuario.findByIdAndDelete(id)
+
+    return usuario
+}
+
 module.exports = {
-    criar
+    criar,
+    deletar
 }
