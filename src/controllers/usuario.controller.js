@@ -41,7 +41,27 @@ async function deletarUsuario(req,res){
         }
 }
 
+async function perfilUsuario(req,res){
+    try{
+        const userId = req.user.id
+        const usuario = await service.perfil(userId)
+
+        if(!usuario) {
+            return res.status(404).json({ error: "perfil não encontrado"})
+        }
+       
+        return res.json({
+            message: "perfil encontraddo com sucesso",
+            usuario
+        })
+
+    } catch (error){
+        return res.status(500).json({ error: "erro interno no servidor"})
+    }
+}
+
 module.exports = {
     criarUsuario,
-    deletarUsuario
+    deletarUsuario,
+    perfilUsuario
 }

@@ -18,7 +18,14 @@ async function deletar(id){
     return usuario
 }
 
+async function perfil(id){
+    const usuario = await Usuario.findById(id)
+
+    return usuario
+}
+
 module.exports = {
     criar,
-    deletar
+    deletar,
+    perfil
 }
