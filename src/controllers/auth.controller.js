@@ -5,6 +5,7 @@ const Usuario = require("../model/usuario.model")
 async function login (req, res){
     const {email , senha} = req.body
     const usuario = await Usuario.findOne({email})
+    .select("+senha")
 
     if(!usuario){
         return res.status(400).json({error: "usuario não encontrado"})

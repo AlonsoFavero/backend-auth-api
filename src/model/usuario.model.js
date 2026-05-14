@@ -14,7 +14,8 @@ const usuarioSchema = new mongoose.Schema({
 
     senha: {
      type: String,
-     required: true
+     required: true,
+     select: false
     }
 })
 
