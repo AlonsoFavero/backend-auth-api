@@ -60,8 +60,47 @@ async function perfilUsuario(req,res){
     }
 }
 
+async function atualizarUsuario(req,res){
+const {nome, email, senha} = req.body
+
+try{
+    const userId = req.user.id
+const usuario = await service.atualizar(userId, nome, email, senha)
+        
+        return res.status(200).json({
+            message: "usuario atualizado com sucesso",
+            data: usuario
+})
+}catch(error){
+    return res.status(500).json({"error": "erro interno do servidor"})
+}
+}
+
+async function atualizar(userId, nome, email, senha){
+    let senhaAtualizada = senha
+
+    if(senha){
+      senhaAtualizada = await bcrypt.hash(senha, 10)
+    }
+
+    const usuarioAtualizado = await Usuario.findByIdAndUpdate(
+        userId,
+        {
+            nome,
+            email,
+            senha: senhaAtualizada
+        },
+        {
+            new: true
+        }
+    )
+    return usuarioAtualizado
+}
+
 module.exports = {
     criarUsuario,
     deletarUsuario,
-    perfilUsuario
+    perfilUsuario,
+    atualizarUsuario,
+    atualizar
 }

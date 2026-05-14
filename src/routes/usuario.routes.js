@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const { criarUsuario, deletarUsuario, perfilUsuario } = require("../controllers/usuario.controller")
+const { criarUsuario, deletarUsuario, perfilUsuario, atualizarUsuario } = require("../controllers/usuario.controller")
 const {login} = require("../controllers/auth.controller")
 const {authMiddleware, adminMiddleware} = require("../middlewares/middleware")
 
@@ -16,6 +16,12 @@ router.delete (
     authMiddleware,
     adminMiddleware,
     deletarUsuario
+)
+
+router.put(
+    "/perfil",
+    authMiddleware,
+    atualizarUsuario
 )
     
 router.post("/", criarUsuario)
