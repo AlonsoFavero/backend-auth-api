@@ -19,7 +19,7 @@ async function login (req, res){
 
     const token = jwt.sign(
         { id: usuario._id},
-        "segredo123"
+        process.env.JWT_SECRET
     )
 
     return res.json({ token})
