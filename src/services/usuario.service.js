@@ -11,7 +11,8 @@ async function criar(nome,email,senha){
     const novoUsuario = await Usuario.create({
         nome,
         email,
-        senha: senhaHash
+        senha: senhaHash,
+        role
     })
 
     return novoUsuario

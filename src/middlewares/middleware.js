@@ -15,7 +15,9 @@ if (partes.length !== 2){
 const token = partes[1]
 
 try{
-jwt.verify(token, "segredo123")
+const decoded = jwt.verify(token, "segredo123")
+
+req.user = decoded
 
 next()
     }catch(error){
@@ -32,7 +34,7 @@ function adminMiddleware(req, res, next) {
         return res.status(401).json({error: "não autenticado"})
     }
 
-    if(user.role !== "admin"){
+    if(req.user.role !== "admin"){
         return res.status(403).json({error: "acesso negado: apenas admin"})
     }
 
