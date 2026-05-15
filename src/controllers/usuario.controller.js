@@ -1,6 +1,6 @@
 const service = require("../services/usuario.service")
 
-async function criarUsuario (req,res) {
+async function criarUsuario (req,res, next) {
     const {nome,email, senha} = req.body
 
     if(!nome ||
@@ -27,13 +27,10 @@ async function criarUsuario (req,res) {
         })
     }
     catch(error){
-        console.log(error)
-
         if(error.message === "email ja cadastrado"){
         return res.status(400).json({"error": "email ja esta sendo utilizado"})
         }
-
-        return res.status(500).json({"error": "erro interno do servidor"})
+          return next(error)
     }
 }
 
