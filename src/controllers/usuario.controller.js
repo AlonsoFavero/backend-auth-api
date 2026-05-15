@@ -34,7 +34,7 @@ async function criarUsuario (req,res, next) {
     }
 }
 
-async function listarUsuarios(req,res){
+async function listarUsuarios(req,res, next){
 try{
     const usuarios = await service.listar()
 
@@ -43,11 +43,11 @@ try{
         data: usuarios
     })
 } catch(error){
-    return res.status(500).json({"error": "erro interno no servidor"})
+    return next(error)
 }
 }
 
-async function deletarUsuario(req,res){
+async function deletarUsuario(req,res, next){
 
     try {
             const { id } = req.params
@@ -67,11 +67,11 @@ async function deletarUsuario(req,res){
             return res.json({ message: "usuário deletado com sucesso" })
     
         } catch (error) {
-            return res.status(500).json({ error: "erro interno do servidor" })
+            return next(error)
         }
 }
 
-async function perfilUsuario(req,res){
+async function perfilUsuario(req,res, next){
     try{
         const userId = req.user.id
         const usuario = await service.perfil(userId)
@@ -86,11 +86,11 @@ async function perfilUsuario(req,res){
         })
 
     } catch (error){
-        return res.status(500).json({ error: "erro interno no servidor"})
+        return next(error)
     }
 }
 
-async function atualizarUsuario(req,res){
+async function atualizarUsuario(req,res, next){
 const {nome, email, senha} = req.body
 
 try{
@@ -102,35 +102,15 @@ const usuario = await service.atualizar(userId, nome, email, senha)
             data: usuario
 })
 }catch(error){
-    return res.status(500).json({"error": "erro interno do servidor"})
+    return next(error)
 }
 }
 
-async function atualizar(userId, nome, email, senha){
-    let senhaAtualizada = senha
 
-    if(senha){
-      senhaAtualizada = await bcrypt.hash(senha, 10)
-    }
-
-    const usuarioAtualizado = await Usuario.findByIdAndUpdate(
-        userId,
-        {
-            nome,
-            email,
-            senha: senhaAtualizada
-        },
-        {
-            new: true
-        }
-    )
-    return usuarioAtualizado
-}
 
 module.exports = {
     criarUsuario,
     deletarUsuario,
     perfilUsuario,
     atualizarUsuario,
-    atualizar
 }

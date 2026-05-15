@@ -34,8 +34,30 @@ async function perfil(id){
     return usuario
 }
 
+async function atualizar(userId, nome, email, senha){
+    let senhaAtualizada = senha
+
+    if(senha){
+      senhaAtualizada = await bcrypt.hash(senha, 10)
+    }
+
+    const usuarioAtualizado = await Usuario.findByIdAndUpdate(
+        userId,
+        {
+            nome,
+            email,
+            senha: senhaAtualizada
+        },
+        {
+            new: true
+        }
+    )
+    return usuarioAtualizado
+}
+
 module.exports = {
     criar,
     deletar,
-    perfil
+    perfil,
+    atualizar
 }
