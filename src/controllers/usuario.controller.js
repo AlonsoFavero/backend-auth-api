@@ -1,26 +1,16 @@
 const service = require("../services/usuario.service")
+const criarUsuarioSchema = require("../schemas/usuario.schema")
 
 async function criarUsuario (req,res, next) {
-    const {nome,email, senha} = req.body
 
-    if(!nome ||
-        !email ||
-        !senha
-    ){
-        return res.status(400).json({error: "todos os campos são obrigatorios"})
-    }
-
-     if(senha.length < 6 ){
-        return res.status(400).json({"error": "a senha deve ter no mínimo 6 caracteres"})
-    }
-
-    if(!email.includes("@")){
-        return res.status(400).json({"error": "email não contém @"})
-    }
-  
     try{
-     const usuario = await service.criar(nome, email, senha)
-        
+        const dados = criarUsuarioSchema.params(req.body)
+
+        const usuario = await service.criar(
+            dados.nome,
+            dados.email,
+            dados.senha
+        )
         return res.status(201).json({
             message: "usuario criado com sucesso",
             data: usuario
