@@ -37,6 +37,19 @@ async function criarUsuario (req,res) {
     }
 }
 
+async function listarUsuarios(req,res){
+try{
+    const usuarios = await service.listar()
+
+    return res.status(200).json({
+        message: "lista criada com sucesso",
+        data: usuarios
+    })
+} catch(error){
+    return res.status(500).json({"error": "erro interno no servidor"})
+}
+}
+
 async function deletarUsuario(req,res){
 
     try {

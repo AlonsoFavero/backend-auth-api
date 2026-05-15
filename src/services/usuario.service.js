@@ -17,6 +17,10 @@ async function criar(nome,email,senha){
     return novoUsuario
 }
 
+async function listar(){
+    return Usuario.find()
+}
+
 async function deletar(id){
     const usuario = await Usuario.findByIdAndDelete(id)
 

@@ -10,6 +10,13 @@ router.get(
     authMiddleware,
     perfilUsuario
 )
+
+router.get(
+    "/usuarios",
+    authMiddleware,
+    adminMiddleware,
+    listarUsuarios
+)
     
 router.delete (
     "/usuarios/:id",
