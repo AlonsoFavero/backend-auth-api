@@ -41,8 +41,26 @@ function adminMiddleware(req, res, next) {
     next()
 }
 
+function ownerOrAdminMiddleware(req, res, next){
+
+const userId = req.user.id 
+const idParams = req.params.id
+const role = req.user.role
+
+if(role === "admin"){
+   return next()
+}
+
+if(userId !== idParams){
+    return res.status(403).json({
+        "error": "para alterar outros usuarios é preciso ser admin"})
+}
+ next()
+}
+
 module.exports = {
     authMiddleware,
-    adminMiddleware
+    adminMiddleware,
+    ownerOrAdminMiddleware
 }
 
