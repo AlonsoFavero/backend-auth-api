@@ -2,6 +2,13 @@ const service = require("../services/usuario.service")
 
 async function criarUsuario (req,res) {
     const {nome,email, senha} = req.body
+
+    if(!nome ||
+        !email ||
+        !senha
+    ){
+        return res.status(400).json({error: "todos os campos são obrigatorios"})
+    }
   
     try{
      const usuario = await service.criar(nome, email, senha)
@@ -13,6 +20,11 @@ async function criarUsuario (req,res) {
     }
     catch(error){
         console.log(error)
+
+        if(error.message === "email ja cadastrado"){
+        return res.status(400).json({"error": "email ja esta sendo utilizado"})
+        }
+        
         return res.status(500).json({"error": "erro interno do servidor"})
     }
 }
