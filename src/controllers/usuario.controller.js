@@ -9,6 +9,10 @@ async function criarUsuario (req,res) {
     ){
         return res.status(400).json({error: "todos os campos são obrigatorios"})
     }
+
+     if(senha.length < 6 ){
+        return res.status(400).json({"error": "a senha deve ter no mínimo 6 caracteres"})
+    }
   
     try{
      const usuario = await service.criar(nome, email, senha)
@@ -24,7 +28,7 @@ async function criarUsuario (req,res) {
         if(error.message === "email ja cadastrado"){
         return res.status(400).json({"error": "email ja esta sendo utilizado"})
         }
-        
+
         return res.status(500).json({"error": "erro interno do servidor"})
     }
 }
