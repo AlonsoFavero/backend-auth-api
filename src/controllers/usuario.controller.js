@@ -13,6 +13,10 @@ async function criarUsuario (req,res) {
      if(senha.length < 6 ){
         return res.status(400).json({"error": "a senha deve ter no mínimo 6 caracteres"})
     }
+
+    if(!email.includes("@")){
+        return res.status(400).json({"error": "email não contém @"})
+    }
   
     try{
      const usuario = await service.criar(nome, email, senha)
