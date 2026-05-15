@@ -11,6 +11,8 @@ const usuarioRoutes = require("./routes/usuario.routes")
 
 app.use("/usuarios", usuarioRoutes)
 
+app.use(errorHandler)
+
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000")
 })
