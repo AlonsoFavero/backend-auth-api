@@ -1,4 +1,5 @@
-const {service} = require("../services/usuario.service")
+const service = require("../services/usuario.service")
+const { success, error } = require("../utils/response")
 const { asyncHandler } = require("../middlewares/asyncHandler.middleware")
 
 const criarUsuario = asyncHandler(async(req,res) => {
@@ -8,10 +9,7 @@ const criarUsuario = asyncHandler(async(req,res) => {
             req.body.email,
             req.body.senha
         )
-        return res.json({
-            message: "usuario criado com sucesso",
-            data: usuario
-        })
+        return success(res, "usuario criado com sucesso", usuario)
 
 })
 
@@ -19,9 +17,7 @@ const listarUsuarios = asyncHandler(async(req,res) => {
 
     const usuarios = await service.listar()
 
-    return res.json({
-        data:usuarios
-    })
+   return success(res, "lista de usuários", usuarios)
 
 })
 
@@ -29,19 +25,17 @@ const deletarUsuario = asyncHandler(async(req,res) => {
 
             const { id } = req.params
 
-            if(req.user.id===id){
-                return res.status(400).json({
-                    error:"o admin não pode se deletar"
-                })
+            if (req.user.id === id){
+            return error(res,"o admin não pode se deletar", 400)
             }
 
             const usuario = await service.deletar(id)
-    
-            if (!usuario) {
-                return res.status(404).json({ error: "usuário não encontrado" })
-            }
-    
-            return res.json({ message: "usuário deletado com sucesso" })
+
+           if(!usuario){
+           return error(res,"usuário não encontrado", 404)
+           }
+
+            return success(res, "usuario deletado com sucesso", usuario)
     
 })
 
@@ -50,32 +44,24 @@ const perfilUsuario = asyncHandler(async(req,res) => {
         const userId = req.user.id
         const usuario = await service.perfil(userId)
 
-        if(!usuario) {
-            return res.status(404).json({ error: "perfil não encontrado"})
+        if (!usuario){
+        return error(res,"perfil não encontrado", 404)
         }
        
-        return res.json({
-            message: "perfil encontraddo com sucesso",
-            usuario
-        })
-
+        return success(res, "usuario encontrado com sucesso", usuario)
     
 })
 
 const atualizarUsuario = asyncHandler(async(req,res) => {
-const {nome, email, senha} = req.body
 
-    const userId = req.user.id
+const {nome, email, senha} = req.body
+ const userId = req.user.id
+ 
 const usuario = await service.atualizar(userId, nome, email, senha)
         
-        return res.status(200).json({
-            message: "usuario atualizado com sucesso",
-            data: usuario
-})
+        return success(res, "usuario atualizado com sucesso", usuario)
 
 })
-
-
 
 module.exports = {
     criarUsuario,
