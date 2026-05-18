@@ -1,7 +1,9 @@
 const { Router } = require("express")
-const { criarUsuario, deletarUsuario, perfilUsuario, atualizarUsuario } = require("../controllers/usuario.controller")
+const { criarUsuario, listarUsuarios, deletarUsuario, perfilUsuario, atualizarUsuario } = require("../controllers/usuario.controller")
+const {validate} = require("../middlewares/validate.middleware")
 const {login} = require("../controllers/auth.controller")
 const {authMiddleware, adminMiddleware} = require("../middlewares/middleware")
+const { criarUsuarioSchema } = require("../schemas/usuario.schema")
 
 const router = Router()
 
@@ -31,7 +33,7 @@ router.put(
     atualizarUsuario
 )
     
-router.post("/", criarUsuario)
 router.post("/login", login)
+router.post("/", validate(criarUsuarioSchema), criarUsuario)
 
 module.exports = router
