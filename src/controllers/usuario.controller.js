@@ -1,10 +1,10 @@
 const service = require("../services/usuario.service")
-const criarUsuarioSchema = require("../schemas/usuario.schema")
+const {criarUsuarioSchema} = require("../schemas/usuario.schema")
 
 async function criarUsuario (req,res, next) {
 
     try{
-        const dados = criarUsuarioSchema.params(req.body)
+        const dados = criarUsuarioSchema.parse(req.body)
 
         const usuario = await service.criar(
             dados.nome,
