@@ -3,7 +3,7 @@ const { criarUsuario, listarUsuarios, deletarUsuario, perfilUsuario, atualizarUs
 const {validate} = require("../middlewares/validate.middleware")
 const {login} = require("../controllers/auth.controller")
 const {authMiddleware, adminMiddleware} = require("../middlewares/middleware")
-const { criarUsuarioSchema } = require("../schemas/usuario.schema")
+const { criarUsuarioSchema, loginSchema } = require("../schemas/usuario.schema")
 
 const router = Router()
 
@@ -33,7 +33,7 @@ router.put(
     atualizarUsuario
 )
     
-router.post("/login", login)
+router.post("/login", validate(loginSchema), login)
 router.post("/", validate(criarUsuarioSchema), criarUsuario)
 
 module.exports = router

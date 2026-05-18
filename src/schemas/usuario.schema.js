@@ -8,6 +8,12 @@ const criarUsuarioSchema = z.object({
     senha: z.string().min(6)
 })
 
+const loginSchema = z.object({
+    email: z.string().email(),
+    senha: z.string().min(6)
+})
+
 module.exports = {
-    criarUsuarioSchema
+    criarUsuarioSchema,
+    loginSchema
 }
