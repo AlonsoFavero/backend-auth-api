@@ -1,51 +1,38 @@
-const service = require("../services/usuario.service")
-const {criarUsuarioSchema} = require("../schemas/usuario.schema")
+const {service} = require("../services/usuario.service")
+const { asyncHandler } = require("../middlewares/asyncHandler.middleware")
 
-async function criarUsuario (req,res, next) {
-
-    try{
-        const dados = criarUsuarioSchema.parse(req.body)
+const criarUsuario = asyncHandler(async(req,res) => {
 
         const usuario = await service.criar(
-            dados.nome,
-            dados.email,
-            dados.senha
+            req.body.nome,
+            req.body.email,
+            req.body.senha
         )
-        return res.status(201).json({
+        return res.json({
             message: "usuario criado com sucesso",
             data: usuario
         })
-    }
-    catch(error){
-        if(error.message === "email ja cadastrado"){
-        return res.status(400).json({"error": "email ja esta sendo utilizado"})
-        }
-          return next(error)
-    }
-}
 
-async function listarUsuarios(req,res, next){
-try{
+})
+
+const listarUsuarios = asyncHandler(async(req,res) => {
+
     const usuarios = await service.listar()
 
-    return res.status(200).json({
-        message: "lista criada com sucesso",
-        data: usuarios
+    return res.json({
+        data:usuarios
     })
-} catch(error){
-    return next(error)
-}
-}
 
-async function deletarUsuario(req,res, next){
+})
 
-    try {
+const deletarUsuario = asyncHandler(async(req,res) => {
+
             const { id } = req.params
-    
-            if (req.user.id === id){
-               return res.status(400).json({
-                error: "o admin não pode se deletar"
-               })
+
+            if(req.user.id===id){
+                return res.status(400).json({
+                    error:"o admin não pode se deletar"
+                })
             }
 
             const usuario = await service.deletar(id)
@@ -56,13 +43,10 @@ async function deletarUsuario(req,res, next){
     
             return res.json({ message: "usuário deletado com sucesso" })
     
-        } catch (error) {
-            return next(error)
-        }
-}
+})
 
-async function perfilUsuario(req,res, next){
-    try{
+const perfilUsuario = asyncHandler(async(req,res) => {
+   
         const userId = req.user.id
         const usuario = await service.perfil(userId)
 
@@ -75,15 +59,12 @@ async function perfilUsuario(req,res, next){
             usuario
         })
 
-    } catch (error){
-        return next(error)
-    }
-}
+    
+})
 
-async function atualizarUsuario(req,res, next){
+const atualizarUsuario = asyncHandler(async(req,res) => {
 const {nome, email, senha} = req.body
 
-try{
     const userId = req.user.id
 const usuario = await service.atualizar(userId, nome, email, senha)
         
@@ -91,10 +72,8 @@ const usuario = await service.atualizar(userId, nome, email, senha)
             message: "usuario atualizado com sucesso",
             data: usuario
 })
-}catch(error){
-    return next(error)
-}
-}
+
+})
 
 
 

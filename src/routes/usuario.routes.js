@@ -4,6 +4,7 @@ const {validate} = require("../middlewares/validate.middleware")
 const {login} = require("../controllers/auth.controller")
 const {authMiddleware, adminMiddleware} = require("../middlewares/middleware")
 const { criarUsuarioSchema, loginSchema } = require("../schemas/usuario.schema")
+const { asyncHandler } = require("../middlewares/asyncHandler.middleware")
 
 const router = Router()
 
@@ -34,6 +35,6 @@ router.put(
 )
     
 router.post("/login", validate(loginSchema), login)
-router.post("/", validate(criarUsuarioSchema), criarUsuario)
+router.post("/", validate(criarUsuarioSchema),asyncHandler(criarUsuario))
 
 module.exports = router
