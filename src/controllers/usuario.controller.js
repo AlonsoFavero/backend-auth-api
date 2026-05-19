@@ -1,4 +1,5 @@
 const service = require("../services/usuario.service")
+const AppError = require("../utils/AppError")
 const { success } = require("../utils/response")
 const { asyncHandler } = require("../middlewares/asyncHandler.middleware")
 
@@ -26,19 +27,13 @@ const deletarUsuario = asyncHandler(async(req,res) => {
             const { id } = req.params
 
             if (req.user.id === id){
-            const err = new Error("o admin não pode se deletar")
-            err.statusCode = 400
-
-            throw err
+                throw new AppError("o admin não pode se deletar", 400)
             }
 
             const usuario = await service.deletar(id)
 
            if(!usuario){
-           const err = new Error("usuário não encontrado")
-           err.statusCode = 404
-
-           throw err
+           throw new AppError("usuário não encontrado", 404)
            }
 
             return success(res, "usuario deletado com sucesso", usuario)
@@ -51,10 +46,8 @@ const perfilUsuario = asyncHandler(async(req,res) => {
         const usuario = await service.perfil(userId)
 
         if (!usuario){
-        const err = new Error("perfil não encontrado")
-           err.statusCode = 404
-
-           throw err
+                throw new AppError("perfil não encontrado", 404)
+        
         }
        
         return success(res, "usuario encontrado com sucesso", usuario)
