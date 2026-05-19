@@ -1,5 +1,5 @@
 const service = require("../services/usuario.service")
-const { success, error } = require("../utils/response")
+const { success } = require("../utils/response")
 const { asyncHandler } = require("../middlewares/asyncHandler.middleware")
 
 const criarUsuario = asyncHandler(async(req,res) => {
@@ -51,7 +51,10 @@ const perfilUsuario = asyncHandler(async(req,res) => {
         const usuario = await service.perfil(userId)
 
         if (!usuario){
-        return error(res,"perfil não encontrado", 404)
+        const err = new Error("perfil não encontrado")
+           err.statusCode = 404
+
+           throw err
         }
        
         return success(res, "usuario encontrado com sucesso", usuario)
@@ -74,4 +77,5 @@ module.exports = {
     deletarUsuario,
     perfilUsuario,
     atualizarUsuario,
+    listarUsuarios
 }
