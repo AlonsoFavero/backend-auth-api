@@ -26,13 +26,19 @@ const deletarUsuario = asyncHandler(async(req,res) => {
             const { id } = req.params
 
             if (req.user.id === id){
-            return error(res,"o admin não pode se deletar", 400)
+            const err = new Error("o admin não pode se deletar")
+            err.statusCode = 400
+
+            throw err
             }
 
             const usuario = await service.deletar(id)
 
            if(!usuario){
-           return error(res,"usuário não encontrado", 404)
+           const err = new Error("usuário não encontrado")
+           err.statusCode = 404
+
+           throw err
            }
 
             return success(res, "usuario deletado com sucesso", usuario)
