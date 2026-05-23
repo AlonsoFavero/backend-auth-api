@@ -6,14 +6,13 @@ async function criar(nome,email,senha){
     const usuarioExiste = await Usuario.findOne({ email })
 
     if(usuarioExiste){
-        throw new Error("email ja cadastrado")
+        throw new AppError("email ja cadastrado", 409)
     }
     const senhaHash = await bcrypt.hash(senha, 10)
     const novoUsuario = await Usuario.create({
         nome,
         email,
         senha: senhaHash,
-        role
     })
 
     return novoUsuario
