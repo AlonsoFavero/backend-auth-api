@@ -5,7 +5,7 @@ function errorHandler(error, req, res, next){
     if(error instanceof ZodError){
      return res.status(400).json ({
         success: false,
-        message: error.errors[0].message
+        message: error.errors.map(e => e.message)
     }) 
     }
 
