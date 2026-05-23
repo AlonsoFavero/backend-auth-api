@@ -36,6 +36,10 @@ async function deletar(id){
 async function perfil(id){
     const usuario = await Usuario.findById(id)
 
+    if(!usuario){
+        throw new AppError("perfil não encontrado", 404)
+    }
+
     return usuario
 }
 
