@@ -45,11 +45,6 @@ const perfilUsuario = asyncHandler(async(req,res) => {
         const userId = req.user.id
         const usuario = await service.perfil(userId)
 
-        if (!usuario){
-                throw new AppError("perfil não encontrado", 404)
-        
-        }
-       
         return success(res, "usuario encontrado com sucesso", usuario)
     
 })

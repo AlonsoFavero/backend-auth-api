@@ -44,6 +44,12 @@ async function perfil(id){
 }
 
 async function atualizar(userId, nome, email, senha){
+    const usuario = await Usuario.findById(userId)
+
+    if(!usuario){
+        throw new AppError("usuario não encontrado", 404)
+    }
+
     let senhaAtualizada = senha
 
     if(senha){
