@@ -15,7 +15,11 @@ async function criar(nome,email,senha){
         senha: senhaHash,
     })
 
-    return novoUsuario
+    const usuarioSemSenha = novoUsuario.toObject()
+
+    delete usuarioSemSenha.senha
+
+    return usuarioSemSenha
 }
 
 async function listar(){

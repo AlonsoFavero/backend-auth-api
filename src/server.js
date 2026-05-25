@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const conectar = require("./database")
+const {errorHandler} = require("./middlewares/error.middleware")
 
 const app = express()
 app.use(express.json()) 
