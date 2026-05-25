@@ -17,6 +17,20 @@ async function login(email,senha){
 
     delete usuarioSemSenha.senha
 
-    return usuarioSemSenha
+     const token = jwt.sign(
+            { id: usuario._id,
+              role: usuario.role
+            },
+            process.env.JWT_SECRET,
+            {
+              expireIn: "1h"
+            }
+        )
+    
+
+    return {
+      usuario: usuarioSemSenha,
+      token
+    }
         
 }
