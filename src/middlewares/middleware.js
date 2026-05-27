@@ -12,10 +12,13 @@ const partes = auth.split(" ")
 if (partes.length !== 2){
     return res.status(401).json({erro: "token mal formatado"})
 }
+
 const token = partes[1]
 
 try{
-const decoded = jwt.verify(token, "segredo123")
+const decoded = jwt.verify(
+    token,
+    process.env.JWT_SECRET)
 
 req.user = decoded
 
