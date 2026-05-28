@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt")
 const Usuario = require("../model/usuario.model")
 const AppError = require("../utils/AppError")
 
-async function criar(nome,email,senha){
+async function criar(nome,email,senha,role){
     const usuarioExiste = await Usuario.findOne({ email })
 
     if(usuarioExiste){
@@ -13,6 +13,7 @@ async function criar(nome,email,senha){
         nome,
         email,
         senha: senhaHash,
+        role
     })
 
     const usuarioSemSenha = novoUsuario.toObject()

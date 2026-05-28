@@ -8,7 +8,8 @@ const criarUsuario = asyncHandler(async(req,res) => {
         const usuario = await service.criar(
             req.body.nome,
             req.body.email,
-            req.body.senha
+            req.body.senha,
+            req.body.role
         )
         return success(res, "usuario criado com sucesso", usuario)
 
